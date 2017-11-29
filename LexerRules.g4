@@ -1,6 +1,5 @@
 lexer grammar LexerRules;
 
-ID                : [a-zA-Z_][a-zA-Z_]*(\d*)?;
 SET               : 'set';
 GETS              : 'gets';
 PUTS              : 'puts';
@@ -22,7 +21,7 @@ ARRAY             : 'array';
 PROC              : 'proc';
 RETURN            : 'return';
 STDIN             : 'stdin';
-CASE              : 'case'
+CASE              : 'case';
 TOKEN_IGUAL_STR   : 'eq';
 TOKEN_DIFF_STR    : 'ne';
 TOKEN_LLAVE_IZQ   : '{';
@@ -49,10 +48,11 @@ TOKEN_DIV         : '/';
 TOKEN_MOD         : '%';
 TOKEN_POT         : '**';
 
+ID            : [a-zA-Z_][a-zA-Z_]*([0-9]*)?;
 TOKEN_DOUBLE  : [0-9]+'.'[0-9]+;
 TOKEN_INTEGER : [0-9]+;
-TOKEN_STRING  : '\"'.+'\"';
+TOKEN_STRING  : '"' .+? '"';
 
 NEWLINE  : '\r'? '\n' ;
 WS       : [ \t]+ -> skip ;
-COMMENTS : '\#'[.]*;
+COMMENTS : '#'[.]* -> skip;
