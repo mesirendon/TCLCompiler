@@ -1,0 +1,15 @@
+#for
+
+for {set i 0} {$i < 10} {incr i} {
+  puts $i;
+
+  if { $i > 9} then {
+       break;
+  } elseif { $i == 8} then {
+    continue;
+  }
+}
+
+for {set i 0.4} {$i < 9} {incr i} { #error de tipo en set
+
+}

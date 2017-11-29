@@ -1,0 +1,11 @@
+set a 2;
+
+if { 1 } then {
+    set b 3;
+    puts "dentro de scope a = $a";
+    puts "dentro de scope b = $b";
+}
+
+puts "dentro de scope a = $a";
+puts "dentro de scope b = $b";
+

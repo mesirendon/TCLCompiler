@@ -1,0 +1,13 @@
+#while
+
+set a 2;
+while { 1 }  {
+    puts $a;
+    set a [ expr { $a ** 2} ];
+
+    if {$a > 500} then {
+        break;
+    }
+}
+
+while { 2.3 } { }

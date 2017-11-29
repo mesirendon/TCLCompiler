@@ -1,0 +1,9 @@
+#for 2
+
+for {set i 0} {$i < 9} {incr i 2} { #error de tipo en set
+    puts $i;
+}
+
+for {set i 0} {$i < 9} {incr i 2.3} { #error de tipo en incr
+    puts $i;
+}

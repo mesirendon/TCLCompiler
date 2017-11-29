@@ -1,0 +1,16 @@
+#input - output - asignacion y declaracion
+
+set a [ gets stdin]; #ingresar input "hola mundo"
+
+set b [ expr { 2 + 1}];
+
+set C [ expr { $b + 1}];
+
+set d "el valor de C es $C";
+
+puts $d;
+puts $a;
+
+set e "el valor de f es $f";
+
+puts $e;
