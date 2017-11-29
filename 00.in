@@ -1,12 +1,37 @@
 set a 6;
 set b 4.56;
 set c "Hola mundo";
+set e 5;
 
 puts $a;
 puts $b;
 puts $c;
-puts $d;
+# puts $d;
 
 puts 4;
 puts 6.321;
-puts "COsito";
+puts "Cosito";
+
+puts [ expr { $a + $b } ];
+puts [ expr { 2 - 2.3 } ];
+puts [ expr { $a - $b } ];
+
+puts [ expr { 2 * 2.3 } ];
+puts [ expr { 2.2 * 2.3 } ];
+puts [ expr { $a * $b } ];
+puts [ expr { $a / $b } ];
+puts [ expr { 4 % 2 } ];
+puts [ expr { $a % $e } ];
+
+puts [ expr { 2 ** 3 } ];
+puts [ expr { 3 ** 2 } ];
+puts [ expr { $a ** $b } ];
+
+puts [ expr { !$b } ];
+puts[  expr              {  ! 0  }   ]    ;
+puts     [           expr { -5 } ];
+puts [ expr {        -   - $b  }  ]                       ;
+puts [ expr { -( -5 ) } ];
+
+#                puts [ expr { $a + $c } ];                     
+

@@ -21,16 +21,6 @@ public interface TclExprListener extends ParseTreeListener {
 	 */
 	void exitProg(TclExprParser.ProgContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TclExprParser#declaration_list}.
-	 * @param ctx the parse tree
-	 */
-	void enterDeclaration_list(TclExprParser.Declaration_listContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TclExprParser#declaration_list}.
-	 * @param ctx the parse tree
-	 */
-	void exitDeclaration_list(TclExprParser.Declaration_listContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TclExprParser#declaration}.
 	 * @param ctx the parse tree
 	 */
@@ -40,6 +30,26 @@ public interface TclExprListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDeclaration(TclExprParser.DeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#execution_list}.
+	 * @param ctx the parse tree
+	 */
+	void enterExecution_list(TclExprParser.Execution_listContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#execution_list}.
+	 * @param ctx the parse tree
+	 */
+	void exitExecution_list(TclExprParser.Execution_listContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#exprs}.
+	 * @param ctx the parse tree
+	 */
+	void enterExprs(TclExprParser.ExprsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#exprs}.
+	 * @param ctx the parse tree
+	 */
+	void exitExprs(TclExprParser.ExprsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TclExprParser#sets_declaration}.
 	 * @param ctx the parse tree
@@ -60,4 +70,64 @@ public interface TclExprListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPuts_declaration(TclExprParser.Puts_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(TclExprParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(TclExprParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void enterTerm(TclExprParser.TermContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void exitTerm(TclExprParser.TermContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterFactor(TclExprParser.FactorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitFactor(TclExprParser.FactorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#pow}.
+	 * @param ctx the parse tree
+	 */
+	void enterPow(TclExprParser.PowContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#pow}.
+	 * @param ctx the parse tree
+	 */
+	void exitPow(TclExprParser.PowContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#elem}.
+	 * @param ctx the parse tree
+	 */
+	void enterElem(TclExprParser.ElemContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#elem}.
+	 * @param ctx the parse tree
+	 */
+	void exitElem(TclExprParser.ElemContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TclExprParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumber(TclExprParser.NumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TclExprParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumber(TclExprParser.NumberContext ctx);
 }

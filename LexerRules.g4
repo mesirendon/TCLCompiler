@@ -54,5 +54,5 @@ TOKEN_INTEGER : [0-9]+;
 TOKEN_STRING  : '"' .+? '"';
 
 NEWLINE  : '\r'? '\n' ;
+COMMENTS : '#'.*? '\r'? '\n' -> skip;
 WS       : [ \t]+ -> skip ;
-COMMENTS : '#'[.]* -> skip;
