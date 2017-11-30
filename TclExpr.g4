@@ -16,6 +16,7 @@ declaration
   : sets_declaration TOKEN_PYC NEWLINE
   | puts_declaration TOKEN_PYC NEWLINE
   | TOKEN_COR_IZQ execution_list TOKEN_COR_DER TOKEN_PYC NEWLINE
+  | procs
   | NEWLINE
   ;
 
@@ -386,7 +387,6 @@ belem returns [Object v]
     }
   ;
 
-/*
 procs
   : PROC ID TOKEN_LLAVE_IZQ args+ TOKEN_LLAVE_DER TOKEN_LLAVE_IZQ declaration+ returns_declaration TOKEN_LLAVE_DER
   ;
@@ -399,11 +399,10 @@ args
   ;
 
 execution_list
-  : array size id
-  | array exists id
-  | id args
-  | gets_declaration
-  | exprs
+  : ARRAY SIZE ID
+  | ARRAY EXISTS ID
+  | ID args+
+  | algebraic
 
 args_list
   : number
@@ -419,4 +418,3 @@ def p_returns_declaration(p):
                            | return token_pyc returns_declaration
                            | empty'''
     pass
-*/

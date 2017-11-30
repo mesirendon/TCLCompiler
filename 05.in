@@ -1,0 +1,5 @@
+proc sum { {a} {b} {c} } {
+  return [ expr {$a + $b + $c}];
+}
+puts [sum {2} {3} {4} ];
+puts [ expr {2 ** [sum {2} {3} {5} ] } ];
