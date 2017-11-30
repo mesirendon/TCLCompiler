@@ -20,12 +20,16 @@ declaration
   ;
 
 execution_list returns [Object v]
-  : algebraic {$v = (Object) $algebraic.v;}
-  | boolean
+  : algebraic    { $v = (Object) $algebraic.v; }
+  | boolean_expr { $v = (Object) $boolean_expr.v; }
   ;
 
 algebraic returns [Double v]
   : EXPR TOKEN_LLAVE_IZQ expression TOKEN_LLAVE_DER {$v = $expression.v;}
+  ;
+
+boolean_expr returns [Integer v]
+  : EXPR TOKEN_LLAVE_IZQ orexp TOKEN_LLAVE_DER { $v = $orexp.v; }
   ;
 
 sets_declaration
@@ -102,14 +106,10 @@ number returns [Double v]
   | TOKEN_DOUBLE  {$v = Double.parseDouble($TOKEN_DOUBLE.text);}
   ;
 
-boolean
-  :
-  ;
-
 orexp returns [Integer v]
   : a=orexp TOKEN_OR b=andexp
     {
-      Boolean x = $a.v || $b.v;
+      Boolean x = $a.v == 0 ? true : false || $b.v == 0 ? true : false;
       if (x)
         $v = 1;
       else
@@ -121,7 +121,20 @@ orexp returns [Integer v]
 andexp returns [Integer v]
   : a=andexp TOKEN_AND b=eqexp
     {
-      Boolean x = $a.v && $b.v;
+      Object y = $b.v;
+      Integer cosito = 0;
+      if ( y instanceof Double ) {
+        Integer intero = ( (Double) y ).intValue();
+        Integer decimal = ( (Double) ( (Double) y * 10 ) ).intValue();
+        if (intero + decimal > 0)
+          cosito = 1;
+        else
+          cosito = 0;
+      }
+      else {
+        System.exit(0);
+      }
+      Boolean x = $a.v == 0 ? true : false && cosito == 0 ? true : false;
       if (x)
         $v = 1;
       else
@@ -132,7 +145,7 @@ andexp returns [Integer v]
       Object x = $eqexp.v;
       if ( x instanceof Double ) {
         Integer intero = (Integer) x;
-        Integer decimal = (Integer) (x * 10);
+        Integer decimal = (Integer) x * 10;
         if (intero + decimal > 0)
           $v = (Integer) 1;
         else
@@ -147,8 +160,8 @@ andexp returns [Integer v]
 eqexp returns [Object v]
   : a=eqexp TOKEN_IGUAL_NUM b=relexp
     {
-      if( a instanceof Double && b instanceof Double ) {
-        Boolean (Double) $a.v == (Double) $b.v;
+      if( $a.v instanceof Double && $b.v instanceof Double ) {
+        Boolean x = (Double) $a.v == (Double) $b.v;
         if (x)
           $v = (Object) 1;
         else
@@ -160,8 +173,8 @@ eqexp returns [Object v]
     }
   | a=eqexp TOKEN_IGUAL_STR b=relexp
     {
-      if( a instanceof String && b instanceof String ) {
-        Boolean (String) $a.v.equal((String) $b.v);
+      if( $a.v instanceof String && $b.v instanceof String ) {
+        Boolean x = (String) $a.v == (String) $b.v;
         if (x)
           $v = (Object) 1;
         else
@@ -173,8 +186,8 @@ eqexp returns [Object v]
     }
   | a=eqexp TOKEN_DIFF_NUM b=relexp
     {
-      if( a instanceof Double && b instanceof Double ) {
-        Boolean (Double) $a.v != (Double) $b.v;
+      if( $a.v instanceof Double && $b.v instanceof Double ) {
+        Boolean x = (Double) $a.v != (Double) $b.v;
         if (x)
           $v = (Object) 1;
         else
@@ -186,9 +199,9 @@ eqexp returns [Object v]
     }
   | a=eqexp TOKEN_DIFF_STR b=relexp
     {
-      if( a instanceof String && b instanceof String ) {
-        Boolean (String) $a.v.equal((String) $b.v);
-        if (!x)
+      if( $a.v instanceof String && $b.v instanceof String ) {
+        Boolean x = (String) $a.v != (String) $b.v;
+        if (x)
           $v = (Object) 1;
         else
           $v = (Object) 0;
@@ -204,14 +217,14 @@ relexp returns [Object v]
   : a=relexp TOKEN_MAYOR b=belem
     {
       if ($a.v instanceof Double && $b.v instanceof Double) {
-        Boolean x = $a.v > $b.v;
+        Boolean x = (Double) $a.v > (Double) $b.v;
         if (x)
           $v = (Object) 1;
         else
           $v = (Object) 0;
       }
       else if ($a.v instanceof String && $b.v instanceof String) {
-        Integer x = $a.v.compareTo($b.v);
+        Integer x = ( (String) $a.v ).compareTo((String) $b.v);
         if (x > 0)
           $v = (Object) 1;
         else
@@ -223,14 +236,14 @@ relexp returns [Object v]
   | a=relexp TOKEN_MENOR b=belem
     {
       if ($a.v instanceof Double && $b.v instanceof Double) {
-        Boolean x = $a.v < $b.v;
+        Boolean x = (Double) $a.v < (Double) $b.v;
         if (x)
           $v = (Object) 1;
         else
           $v = (Object) 0;
       }
       else if ($a.v instanceof String && $b.v instanceof String) {
-        Integer x = $a.v.compareTo($b.v);
+        Integer x = ( (String) $a.v ).compareTo((String) $b.v);
         if (x < 0)
           $v = (Object) 1;
         else
@@ -242,14 +255,14 @@ relexp returns [Object v]
   | a=relexp TOKEN_MAYOR_IGUAL b=belem
     {
       if ($a.v instanceof Double && $b.v instanceof Double) {
-        Boolean x = $a.v >= $b.v;
+        Boolean x = (Double) $a.v >= (Double) $b.v;
         if (x)
           $v = (Object) 1;
         else
           $v = (Object) 0;
       }
       else if ($a.v instanceof String && $b.v instanceof String) {
-        Integer x = $a.v.compareTo($b.v);
+        Integer x = ( (String) $a.v ).compareTo((String) $b.v);
         if (x >= 0)
           $v = (Object) 1;
         else
@@ -261,14 +274,14 @@ relexp returns [Object v]
   | a=relexp TOKEN_MENOR_IGUAL b=belem
     {
       if ($a.v instanceof Double && $b.v instanceof Double) {
-        Boolean x = $a.v <= $b.v;
+        Boolean x = (Double) $a.v <= (Double) $b.v;
         if (x)
           $v = (Object) 1;
         else
           $v = (Object) 0;
       }
       else if ($a.v instanceof String && $b.v instanceof String) {
-        Integer x = $a.v.compareTo($b.v);
+        Integer x = ( (String) $a.v ).compareTo((String) $b.v);
         if (x <= 0)
           $v = (Object) 1;
         else
@@ -277,7 +290,18 @@ relexp returns [Object v]
       else
         System.exit(0);
     }
-  | belem { $v = $belem.v }
+  | belem { $v = $belem.v; }
   ;
 
-belem
+belem returns [Object v]
+  : expression   { $v = (Object) $expression.v; }
+  | TOKEN_STRING { $v = (Object) $TOKEN_STRING.text.replaceAll("\"", ""); }
+  | TOKEN_DOLLAR ID
+    {
+      Object x = memory.get($ID.text);
+      if( x != null )
+        $v = (Object) x;
+      else
+        System.exit(0);
+    }
+  ;
