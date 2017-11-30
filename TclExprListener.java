@@ -41,15 +41,15 @@ public interface TclExprListener extends ParseTreeListener {
 	 */
 	void exitExecution_list(TclExprParser.Execution_listContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TclExprParser#exprs}.
+	 * Enter a parse tree produced by {@link TclExprParser#algebraic}.
 	 * @param ctx the parse tree
 	 */
-	void enterExprs(TclExprParser.ExprsContext ctx);
+	void enterAlgebraic(TclExprParser.AlgebraicContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TclExprParser#exprs}.
+	 * Exit a parse tree produced by {@link TclExprParser#algebraic}.
 	 * @param ctx the parse tree
 	 */
-	void exitExprs(TclExprParser.ExprsContext ctx);
+	void exitAlgebraic(TclExprParser.AlgebraicContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TclExprParser#sets_declaration}.
 	 * @param ctx the parse tree

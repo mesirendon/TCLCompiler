@@ -31,11 +31,11 @@ public class TclExprParser extends Parser {
 		TOKEN_POT=47, ID=48, TOKEN_DOUBLE=49, TOKEN_INTEGER=50, TOKEN_STRING=51, 
 		NEWLINE=52, COMMENTS=53, WS=54;
 	public static final int
-		RULE_prog = 0, RULE_declaration = 1, RULE_execution_list = 2, RULE_exprs = 3, 
+		RULE_prog = 0, RULE_declaration = 1, RULE_execution_list = 2, RULE_algebraic = 3, 
 		RULE_sets_declaration = 4, RULE_puts_declaration = 5, RULE_expression = 6, 
 		RULE_term = 7, RULE_factor = 8, RULE_pow = 9, RULE_elem = 10, RULE_number = 11;
 	public static final String[] ruleNames = {
-		"prog", "declaration", "execution_list", "exprs", "sets_declaration", 
+		"prog", "declaration", "execution_list", "algebraic", "sets_declaration", 
 		"puts_declaration", "expression", "term", "factor", "pow", "elem", "number"
 	};
 
@@ -260,10 +260,10 @@ public class TclExprParser extends Parser {
 	}
 
 	public static class Execution_listContext extends ParserRuleContext {
-		public Double v;
-		public ExprsContext exprs;
-		public ExprsContext exprs() {
-			return getRuleContext(ExprsContext.class,0);
+		public Object v;
+		public AlgebraicContext algebraic;
+		public AlgebraicContext algebraic() {
+			return getRuleContext(AlgebraicContext.class,0);
 		}
 		public Execution_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -286,8 +286,8 @@ public class TclExprParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(46);
-			((Execution_listContext)_localctx).exprs = exprs();
-			((Execution_listContext)_localctx).v =  ((Execution_listContext)_localctx).exprs.v;
+			((Execution_listContext)_localctx).algebraic = algebraic();
+			((Execution_listContext)_localctx).v =  (Object) ((Execution_listContext)_localctx).algebraic.v;
 			}
 		}
 		catch (RecognitionException re) {
@@ -301,7 +301,7 @@ public class TclExprParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ExprsContext extends ParserRuleContext {
+	public static class AlgebraicContext extends ParserRuleContext {
 		public Double v;
 		public ExpressionContext expression;
 		public TerminalNode EXPR() { return getToken(TclExprParser.EXPR, 0); }
@@ -310,23 +310,23 @@ public class TclExprParser extends Parser {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode TOKEN_LLAVE_DER() { return getToken(TclExprParser.TOKEN_LLAVE_DER, 0); }
-		public ExprsContext(ParserRuleContext parent, int invokingState) {
+		public AlgebraicContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_exprs; }
+		@Override public int getRuleIndex() { return RULE_algebraic; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TclExprListener ) ((TclExprListener)listener).enterExprs(this);
+			if ( listener instanceof TclExprListener ) ((TclExprListener)listener).enterAlgebraic(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TclExprListener ) ((TclExprListener)listener).exitExprs(this);
+			if ( listener instanceof TclExprListener ) ((TclExprListener)listener).exitAlgebraic(this);
 		}
 	}
 
-	public final ExprsContext exprs() throws RecognitionException {
-		ExprsContext _localctx = new ExprsContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_exprs);
+	public final AlgebraicContext algebraic() throws RecognitionException {
+		AlgebraicContext _localctx = new AlgebraicContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_algebraic);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -335,10 +335,10 @@ public class TclExprParser extends Parser {
 			setState(50);
 			match(TOKEN_LLAVE_IZQ);
 			setState(51);
-			((ExprsContext)_localctx).expression = expression(0);
+			((AlgebraicContext)_localctx).expression = expression(0);
 			setState(52);
 			match(TOKEN_LLAVE_DER);
-			((ExprsContext)_localctx).v =  ((ExprsContext)_localctx).expression.v;
+			((AlgebraicContext)_localctx).v =  ((AlgebraicContext)_localctx).expression.v;
 			}
 		}
 		catch (RecognitionException re) {
@@ -901,6 +901,7 @@ public class TclExprParser extends Parser {
 				}
 				break;
 			case TOKEN_DOLLAR:
+			case TOKEN_COR_IZQ:
 			case TOKEN_PAR_IZQ:
 			case TOKEN_DOUBLE:
 			case TOKEN_INTEGER:
@@ -930,12 +931,18 @@ public class TclExprParser extends Parser {
 		public Double v;
 		public NumberContext number;
 		public Token ID;
+		public AlgebraicContext algebraic;
 		public ExpressionContext expression;
 		public NumberContext number() {
 			return getRuleContext(NumberContext.class,0);
 		}
 		public TerminalNode TOKEN_DOLLAR() { return getToken(TclExprParser.TOKEN_DOLLAR, 0); }
 		public TerminalNode ID() { return getToken(TclExprParser.ID, 0); }
+		public TerminalNode TOKEN_COR_IZQ() { return getToken(TclExprParser.TOKEN_COR_IZQ, 0); }
+		public AlgebraicContext algebraic() {
+			return getRuleContext(AlgebraicContext.class,0);
+		}
+		public TerminalNode TOKEN_COR_DER() { return getToken(TclExprParser.TOKEN_COR_DER, 0); }
 		public TerminalNode TOKEN_PAR_IZQ() { return getToken(TclExprParser.TOKEN_PAR_IZQ, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -959,7 +966,7 @@ public class TclExprParser extends Parser {
 		ElemContext _localctx = new ElemContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_elem);
 		try {
-			setState(167);
+			setState(172);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case TOKEN_DOUBLE:
@@ -993,14 +1000,26 @@ public class TclExprParser extends Parser {
 				    
 				}
 				break;
-			case TOKEN_PAR_IZQ:
+			case TOKEN_COR_IZQ:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(162);
-				match(TOKEN_PAR_IZQ);
+				match(TOKEN_COR_IZQ);
 				setState(163);
-				((ElemContext)_localctx).expression = expression(0);
+				((ElemContext)_localctx).algebraic = algebraic();
 				setState(164);
+				match(TOKEN_COR_DER);
+				 ((ElemContext)_localctx).v =  ((ElemContext)_localctx).algebraic.v; 
+				}
+				break;
+			case TOKEN_PAR_IZQ:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(167);
+				match(TOKEN_PAR_IZQ);
+				setState(168);
+				((ElemContext)_localctx).expression = expression(0);
+				setState(169);
 				match(TOKEN_PAR_DER);
 				 ((ElemContext)_localctx).v =  ((ElemContext)_localctx).expression.v; 
 				}
@@ -1044,13 +1063,13 @@ public class TclExprParser extends Parser {
 		NumberContext _localctx = new NumberContext(_ctx, getState());
 		enterRule(_localctx, 22, RULE_number);
 		try {
-			setState(173);
+			setState(178);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case TOKEN_INTEGER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(169);
+				setState(174);
 				((NumberContext)_localctx).TOKEN_INTEGER = match(TOKEN_INTEGER);
 				((NumberContext)_localctx).v =  Double.parseDouble((((NumberContext)_localctx).TOKEN_INTEGER!=null?((NumberContext)_localctx).TOKEN_INTEGER.getText():null));
 				}
@@ -1058,7 +1077,7 @@ public class TclExprParser extends Parser {
 			case TOKEN_DOUBLE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(171);
+				setState(176);
 				((NumberContext)_localctx).TOKEN_DOUBLE = match(TOKEN_DOUBLE);
 				((NumberContext)_localctx).v =  Double.parseDouble((((NumberContext)_localctx).TOKEN_DOUBLE!=null?((NumberContext)_localctx).TOKEN_DOUBLE.getText():null));
 				}
@@ -1109,7 +1128,7 @@ public class TclExprParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\38\u00b2\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\38\u00b7\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\3\2\6\2\34\n\2\r\2\16\2\35\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3/\n\3\3\4\3\4\3\4\3\5\3\5\3\5"+
@@ -1120,46 +1139,48 @@ public class TclExprParser extends Parser {
 		"\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\7\t\u0083\n\t\f\t\16\t\u0086\13\t\3\n"+
 		"\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u0090\n\n\3\13\3\13\3\13\3\13\3\13\3"+
 		"\13\3\13\3\13\3\13\3\13\3\13\5\13\u009d\n\13\3\f\3\f\3\f\3\f\3\f\3\f\3"+
-		"\f\3\f\3\f\3\f\3\f\5\f\u00aa\n\f\3\r\3\r\3\r\3\r\5\r\u00b0\n\r\3\r\2\4"+
-		"\16\20\16\2\4\6\b\n\f\16\20\22\24\26\30\2\2\2\u00ba\2\33\3\2\2\2\4.\3"+
-		"\2\2\2\6\60\3\2\2\2\b\63\3\2\2\2\nE\3\2\2\2\fZ\3\2\2\2\16\\\3\2\2\2\20"+
-		"o\3\2\2\2\22\u008f\3\2\2\2\24\u009c\3\2\2\2\26\u00a9\3\2\2\2\30\u00af"+
-		"\3\2\2\2\32\34\5\4\3\2\33\32\3\2\2\2\34\35\3\2\2\2\35\33\3\2\2\2\35\36"+
-		"\3\2\2\2\36\3\3\2\2\2\37 \5\n\6\2 !\7\36\2\2!\"\7\66\2\2\"/\3\2\2\2#$"+
-		"\5\f\7\2$%\7\36\2\2%&\7\66\2\2&/\3\2\2\2\'(\7\37\2\2()\5\6\4\2)*\7 \2"+
-		"\2*+\7\36\2\2+,\7\66\2\2,/\3\2\2\2-/\7\66\2\2.\37\3\2\2\2.#\3\2\2\2.\'"+
-		"\3\2\2\2.-\3\2\2\2/\5\3\2\2\2\60\61\5\b\5\2\61\62\b\4\1\2\62\7\3\2\2\2"+
-		"\63\64\7\6\2\2\64\65\7\33\2\2\65\66\5\16\b\2\66\67\7\34\2\2\678\b\5\1"+
-		"\28\t\3\2\2\29:\7\3\2\2:;\7\62\2\2;<\7\64\2\2<F\b\6\1\2=>\7\3\2\2>?\7"+
-		"\62\2\2?@\7\63\2\2@F\b\6\1\2AB\7\3\2\2BC\7\62\2\2CD\7\65\2\2DF\b\6\1\2"+
-		"E9\3\2\2\2E=\3\2\2\2EA\3\2\2\2F\13\3\2\2\2GH\7\5\2\2HI\7\64\2\2I[\b\7"+
-		"\1\2JK\7\5\2\2KL\7\63\2\2L[\b\7\1\2MN\7\5\2\2NO\7\65\2\2O[\b\7\1\2PQ\7"+
-		"\5\2\2QR\7\35\2\2RS\7\62\2\2S[\b\7\1\2TU\7\5\2\2UV\7\37\2\2VW\5\6\4\2"+
-		"WX\7 \2\2XY\b\7\1\2Y[\3\2\2\2ZG\3\2\2\2ZJ\3\2\2\2ZM\3\2\2\2ZP\3\2\2\2"+
-		"ZT\3\2\2\2[\r\3\2\2\2\\]\b\b\1\2]^\5\20\t\2^_\b\b\1\2_l\3\2\2\2`a\f\5"+
-		"\2\2ab\7,\2\2bc\5\20\t\2cd\b\b\1\2dk\3\2\2\2ef\f\4\2\2fg\7-\2\2gh\5\20"+
-		"\t\2hi\b\b\1\2ik\3\2\2\2j`\3\2\2\2je\3\2\2\2kn\3\2\2\2lj\3\2\2\2lm\3\2"+
-		"\2\2m\17\3\2\2\2nl\3\2\2\2op\b\t\1\2pq\5\22\n\2qr\b\t\1\2r\u0084\3\2\2"+
-		"\2st\f\6\2\2tu\7.\2\2uv\5\22\n\2vw\b\t\1\2w\u0083\3\2\2\2xy\f\5\2\2yz"+
-		"\7/\2\2z{\5\22\n\2{|\b\t\1\2|\u0083\3\2\2\2}~\f\4\2\2~\177\7\60\2\2\177"+
-		"\u0080\5\22\n\2\u0080\u0081\b\t\1\2\u0081\u0083\3\2\2\2\u0082s\3\2\2\2"+
-		"\u0082x\3\2\2\2\u0082}\3\2\2\2\u0083\u0086\3\2\2\2\u0084\u0082\3\2\2\2"+
-		"\u0084\u0085\3\2\2\2\u0085\21\3\2\2\2\u0086\u0084\3\2\2\2\u0087\u0088"+
-		"\5\24\13\2\u0088\u0089\7\61\2\2\u0089\u008a\5\22\n\2\u008a\u008b\b\n\1"+
-		"\2\u008b\u0090\3\2\2\2\u008c\u008d\5\24\13\2\u008d\u008e\b\n\1\2\u008e"+
-		"\u0090\3\2\2\2\u008f\u0087\3\2\2\2\u008f\u008c\3\2\2\2\u0090\23\3\2\2"+
-		"\2\u0091\u0092\7-\2\2\u0092\u0093\5\24\13\2\u0093\u0094\b\13\1\2\u0094"+
-		"\u009d\3\2\2\2\u0095\u0096\7+\2\2\u0096\u0097\5\24\13\2\u0097\u0098\b"+
-		"\13\1\2\u0098\u009d\3\2\2\2\u0099\u009a\5\26\f\2\u009a\u009b\b\13\1\2"+
-		"\u009b\u009d\3\2\2\2\u009c\u0091\3\2\2\2\u009c\u0095\3\2\2\2\u009c\u0099"+
-		"\3\2\2\2\u009d\25\3\2\2\2\u009e\u009f\5\30\r\2\u009f\u00a0\b\f\1\2\u00a0"+
-		"\u00aa\3\2\2\2\u00a1\u00a2\7\35\2\2\u00a2\u00a3\7\62\2\2\u00a3\u00aa\b"+
-		"\f\1\2\u00a4\u00a5\7!\2\2\u00a5\u00a6\5\16\b\2\u00a6\u00a7\7\"\2\2\u00a7"+
-		"\u00a8\b\f\1\2\u00a8\u00aa\3\2\2\2\u00a9\u009e\3\2\2\2\u00a9\u00a1\3\2"+
-		"\2\2\u00a9\u00a4\3\2\2\2\u00aa\27\3\2\2\2\u00ab\u00ac\7\64\2\2\u00ac\u00b0"+
-		"\b\r\1\2\u00ad\u00ae\7\63\2\2\u00ae\u00b0\b\r\1\2\u00af\u00ab\3\2\2\2"+
-		"\u00af\u00ad\3\2\2\2\u00b0\31\3\2\2\2\16\35.EZjl\u0082\u0084\u008f\u009c"+
-		"\u00a9\u00af";
+		"\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\5\f\u00af\n\f\3\r\3\r\3\r\3\r\5"+
+		"\r\u00b5\n\r\3\r\2\4\16\20\16\2\4\6\b\n\f\16\20\22\24\26\30\2\2\2\u00c0"+
+		"\2\33\3\2\2\2\4.\3\2\2\2\6\60\3\2\2\2\b\63\3\2\2\2\nE\3\2\2\2\fZ\3\2\2"+
+		"\2\16\\\3\2\2\2\20o\3\2\2\2\22\u008f\3\2\2\2\24\u009c\3\2\2\2\26\u00ae"+
+		"\3\2\2\2\30\u00b4\3\2\2\2\32\34\5\4\3\2\33\32\3\2\2\2\34\35\3\2\2\2\35"+
+		"\33\3\2\2\2\35\36\3\2\2\2\36\3\3\2\2\2\37 \5\n\6\2 !\7\36\2\2!\"\7\66"+
+		"\2\2\"/\3\2\2\2#$\5\f\7\2$%\7\36\2\2%&\7\66\2\2&/\3\2\2\2\'(\7\37\2\2"+
+		"()\5\6\4\2)*\7 \2\2*+\7\36\2\2+,\7\66\2\2,/\3\2\2\2-/\7\66\2\2.\37\3\2"+
+		"\2\2.#\3\2\2\2.\'\3\2\2\2.-\3\2\2\2/\5\3\2\2\2\60\61\5\b\5\2\61\62\b\4"+
+		"\1\2\62\7\3\2\2\2\63\64\7\6\2\2\64\65\7\33\2\2\65\66\5\16\b\2\66\67\7"+
+		"\34\2\2\678\b\5\1\28\t\3\2\2\29:\7\3\2\2:;\7\62\2\2;<\7\64\2\2<F\b\6\1"+
+		"\2=>\7\3\2\2>?\7\62\2\2?@\7\63\2\2@F\b\6\1\2AB\7\3\2\2BC\7\62\2\2CD\7"+
+		"\65\2\2DF\b\6\1\2E9\3\2\2\2E=\3\2\2\2EA\3\2\2\2F\13\3\2\2\2GH\7\5\2\2"+
+		"HI\7\64\2\2I[\b\7\1\2JK\7\5\2\2KL\7\63\2\2L[\b\7\1\2MN\7\5\2\2NO\7\65"+
+		"\2\2O[\b\7\1\2PQ\7\5\2\2QR\7\35\2\2RS\7\62\2\2S[\b\7\1\2TU\7\5\2\2UV\7"+
+		"\37\2\2VW\5\6\4\2WX\7 \2\2XY\b\7\1\2Y[\3\2\2\2ZG\3\2\2\2ZJ\3\2\2\2ZM\3"+
+		"\2\2\2ZP\3\2\2\2ZT\3\2\2\2[\r\3\2\2\2\\]\b\b\1\2]^\5\20\t\2^_\b\b\1\2"+
+		"_l\3\2\2\2`a\f\5\2\2ab\7,\2\2bc\5\20\t\2cd\b\b\1\2dk\3\2\2\2ef\f\4\2\2"+
+		"fg\7-\2\2gh\5\20\t\2hi\b\b\1\2ik\3\2\2\2j`\3\2\2\2je\3\2\2\2kn\3\2\2\2"+
+		"lj\3\2\2\2lm\3\2\2\2m\17\3\2\2\2nl\3\2\2\2op\b\t\1\2pq\5\22\n\2qr\b\t"+
+		"\1\2r\u0084\3\2\2\2st\f\6\2\2tu\7.\2\2uv\5\22\n\2vw\b\t\1\2w\u0083\3\2"+
+		"\2\2xy\f\5\2\2yz\7/\2\2z{\5\22\n\2{|\b\t\1\2|\u0083\3\2\2\2}~\f\4\2\2"+
+		"~\177\7\60\2\2\177\u0080\5\22\n\2\u0080\u0081\b\t\1\2\u0081\u0083\3\2"+
+		"\2\2\u0082s\3\2\2\2\u0082x\3\2\2\2\u0082}\3\2\2\2\u0083\u0086\3\2\2\2"+
+		"\u0084\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085\21\3\2\2\2\u0086\u0084"+
+		"\3\2\2\2\u0087\u0088\5\24\13\2\u0088\u0089\7\61\2\2\u0089\u008a\5\22\n"+
+		"\2\u008a\u008b\b\n\1\2\u008b\u0090\3\2\2\2\u008c\u008d\5\24\13\2\u008d"+
+		"\u008e\b\n\1\2\u008e\u0090\3\2\2\2\u008f\u0087\3\2\2\2\u008f\u008c\3\2"+
+		"\2\2\u0090\23\3\2\2\2\u0091\u0092\7-\2\2\u0092\u0093\5\24\13\2\u0093\u0094"+
+		"\b\13\1\2\u0094\u009d\3\2\2\2\u0095\u0096\7+\2\2\u0096\u0097\5\24\13\2"+
+		"\u0097\u0098\b\13\1\2\u0098\u009d\3\2\2\2\u0099\u009a\5\26\f\2\u009a\u009b"+
+		"\b\13\1\2\u009b\u009d\3\2\2\2\u009c\u0091\3\2\2\2\u009c\u0095\3\2\2\2"+
+		"\u009c\u0099\3\2\2\2\u009d\25\3\2\2\2\u009e\u009f\5\30\r\2\u009f\u00a0"+
+		"\b\f\1\2\u00a0\u00af\3\2\2\2\u00a1\u00a2\7\35\2\2\u00a2\u00a3\7\62\2\2"+
+		"\u00a3\u00af\b\f\1\2\u00a4\u00a5\7\37\2\2\u00a5\u00a6\5\b\5\2\u00a6\u00a7"+
+		"\7 \2\2\u00a7\u00a8\b\f\1\2\u00a8\u00af\3\2\2\2\u00a9\u00aa\7!\2\2\u00aa"+
+		"\u00ab\5\16\b\2\u00ab\u00ac\7\"\2\2\u00ac\u00ad\b\f\1\2\u00ad\u00af\3"+
+		"\2\2\2\u00ae\u009e\3\2\2\2\u00ae\u00a1\3\2\2\2\u00ae\u00a4\3\2\2\2\u00ae"+
+		"\u00a9\3\2\2\2\u00af\27\3\2\2\2\u00b0\u00b1\7\64\2\2\u00b1\u00b5\b\r\1"+
+		"\2\u00b2\u00b3\7\63\2\2\u00b3\u00b5\b\r\1\2\u00b4\u00b0\3\2\2\2\u00b4"+
+		"\u00b2\3\2\2\2\u00b5\31\3\2\2\2\16\35.EZjl\u0082\u0084\u008f\u009c\u00ae"+
+		"\u00b4";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

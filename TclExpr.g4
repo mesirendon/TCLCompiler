@@ -19,11 +19,12 @@ declaration
   | NEWLINE
   ;
 
-execution_list returns [Double v]
-  : exprs {$v = $exprs.v;}
+execution_list returns [Object v]
+  : algebraic {$v = (Object) $algebraic.v;}
+  | boolean
   ;
 
-exprs returns [Double v]
+algebraic returns [Double v]
   : EXPR TOKEN_LLAVE_IZQ expression TOKEN_LLAVE_DER {$v = $expression.v;}
   ;
 
@@ -92,6 +93,7 @@ elem returns [Double v]
       }
     }
 //  | TOKEN_COR_IZQ ID args TOKEN_COR_DER
+  | TOKEN_COR_IZQ algebraic TOKEN_COR_DER  { $v = $algebraic.v; }
   | TOKEN_PAR_IZQ expression TOKEN_PAR_DER { $v = $expression.v; }
   ;
 
@@ -99,3 +101,183 @@ number returns [Double v]
   : TOKEN_INTEGER {$v = Double.parseDouble($TOKEN_INTEGER.text);}
   | TOKEN_DOUBLE  {$v = Double.parseDouble($TOKEN_DOUBLE.text);}
   ;
+
+boolean
+  :
+  ;
+
+orexp returns [Integer v]
+  : a=orexp TOKEN_OR b=andexp
+    {
+      Boolean x = $a.v || $b.v;
+      if (x)
+        $v = 1;
+      else
+        $v = 0;
+    }
+  | andexp { $v = $andexp.v; }
+  ;
+
+andexp returns [Integer v]
+  : a=andexp TOKEN_AND b=eqexp
+    {
+      Boolean x = $a.v && $b.v;
+      if (x)
+        $v = 1;
+      else
+        $v = 0;
+    }
+  | eqexp
+    {
+      Object x = $eqexp.v;
+      if ( x instanceof Double ) {
+        Integer intero = (Integer) x;
+        Integer decimal = (Integer) (x * 10);
+        if (intero + decimal > 0)
+          $v = (Integer) 1;
+        else
+          $v = (Integer) 0;
+      }
+      else {
+        System.exit(0);
+      }
+    }
+  ;
+
+eqexp returns [Object v]
+  : a=eqexp TOKEN_IGUAL_NUM b=relexp
+    {
+      if( a instanceof Double && b instanceof Double ) {
+        Boolean (Double) $a.v == (Double) $b.v;
+        if (x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else {
+        System.exit(0);
+      }
+    }
+  | a=eqexp TOKEN_IGUAL_STR b=relexp
+    {
+      if( a instanceof String && b instanceof String ) {
+        Boolean (String) $a.v.equal((String) $b.v);
+        if (x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else {
+        System.exit(0);
+      }
+    }
+  | a=eqexp TOKEN_DIFF_NUM b=relexp
+    {
+      if( a instanceof Double && b instanceof Double ) {
+        Boolean (Double) $a.v != (Double) $b.v;
+        if (x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else {
+        System.exit(0);
+      }
+    }
+  | a=eqexp TOKEN_DIFF_STR b=relexp
+    {
+      if( a instanceof String && b instanceof String ) {
+        Boolean (String) $a.v.equal((String) $b.v);
+        if (!x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else {
+        System.exit(0);
+      }
+    }
+  | relexp { $v = $relexp.v; }
+  ;
+
+relexp returns [Object v]
+  : a=relexp TOKEN_MAYOR b=belem
+    {
+      if ($a.v instanceof Double && $b.v instanceof Double) {
+        Boolean x = $a.v > $b.v;
+        if (x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else if ($a.v instanceof String && $b.v instanceof String) {
+        Integer x = $a.v.compareTo($b.v);
+        if (x > 0)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else
+        System.exit(0);
+    }
+  | a=relexp TOKEN_MENOR b=belem
+    {
+      if ($a.v instanceof Double && $b.v instanceof Double) {
+        Boolean x = $a.v < $b.v;
+        if (x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else if ($a.v instanceof String && $b.v instanceof String) {
+        Integer x = $a.v.compareTo($b.v);
+        if (x < 0)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else
+        System.exit(0);
+    }
+  | a=relexp TOKEN_MAYOR_IGUAL b=belem
+    {
+      if ($a.v instanceof Double && $b.v instanceof Double) {
+        Boolean x = $a.v >= $b.v;
+        if (x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else if ($a.v instanceof String && $b.v instanceof String) {
+        Integer x = $a.v.compareTo($b.v);
+        if (x >= 0)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else
+        System.exit(0);
+    }
+  | a=relexp TOKEN_MENOR_IGUAL b=belem
+    {
+      if ($a.v instanceof Double && $b.v instanceof Double) {
+        Boolean x = $a.v <= $b.v;
+        if (x)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else if ($a.v instanceof String && $b.v instanceof String) {
+        Integer x = $a.v.compareTo($b.v);
+        if (x <= 0)
+          $v = (Object) 1;
+        else
+          $v = (Object) 0;
+      }
+      else
+        System.exit(0);
+    }
+  | belem { $v = $belem.v }
+  ;
+
+belem

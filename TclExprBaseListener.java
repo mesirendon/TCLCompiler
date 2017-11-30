@@ -55,13 +55,13 @@ public class TclExprBaseListener implements TclExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExprs(TclExprParser.ExprsContext ctx) { }
+	@Override public void enterAlgebraic(TclExprParser.AlgebraicContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExprs(TclExprParser.ExprsContext ctx) { }
+	@Override public void exitAlgebraic(TclExprParser.AlgebraicContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
