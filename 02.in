@@ -4,3 +4,5 @@ puts [ expr { "abc" ne "abd" }];
 puts [ expr { "abc" eq "abc" }];
 puts [ expr { 2 == 2 }];
 puts [ expr { 2.3 == 2.3 }];
+puts [ expr { 2.5 != 2.3 }];
+puts [ expr { 2.3 != 2.3 }];

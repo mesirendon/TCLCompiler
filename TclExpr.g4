@@ -164,7 +164,7 @@ eqexp returns [Object v]
   : a=eqexp TOKEN_IGUAL_NUM b=relexp
     {
       if( $a.v instanceof Double && $b.v instanceof Double ) {
-        Boolean x = (Double) $a.v == (Double) $b.v;
+        Boolean x = ( (Double) $a.v ).equals( $b.v );
         if (x)
           $v = (Object) 1;
         else
@@ -177,8 +177,8 @@ eqexp returns [Object v]
   | a=eqexp TOKEN_IGUAL_STR b=relexp
     {
       if( $a.v instanceof String && $b.v instanceof String ) {
-        Boolean x = (String) $a.v == (String) $b.v;
-        if (x)
+        Integer x = ( (String) $a.v ).compareTo( (String) $b.v );
+        if (x == 0)
           $v = (Object) 1;
         else
           $v = (Object) 0;
@@ -190,7 +190,7 @@ eqexp returns [Object v]
   | a=eqexp TOKEN_DIFF_NUM b=relexp
     {
       if( $a.v instanceof Double && $b.v instanceof Double ) {
-        Boolean x = (Double) $a.v != (Double) $b.v;
+        Boolean x = !( (Double) $a.v ).equals( $b.v );
         if (x)
           $v = (Object) 1;
         else
