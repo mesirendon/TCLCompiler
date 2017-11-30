@@ -79,6 +79,35 @@ puts_declaration
   : PUTS TOKEN_INTEGER {System.out.println($TOKEN_INTEGER.text);}
   | PUTS TOKEN_DOUBLE  {System.out.println($TOKEN_DOUBLE.text);}
   | PUTS TOKEN_STRING  {System.out.println($TOKEN_STRING.text.replaceAll("\"", ""));}
+  | PUTS TOKEN_COR_IZQ ARRAY SIZE ID TOKEN_COR_DER
+    {
+      Map<Object, Object> x = (Map<Object, Object>) memory.get($ID.text);
+      if( x == null ) {
+        System.out.println("<" + $ID.line + "," + ( $ID.pos + 1 ) + "> Error semantico: la variable '" + $ID.text + "' no ha sido declarada.");
+        System.exit(0);
+      }
+      else if ("HashMap".equals( x.getClass().getSimpleName() )) {
+        System.out.println(x.size());
+      }
+      else {
+        System.out.println("No es un array");
+        System.exit(0);
+      }
+    }
+  | PUTS TOKEN_COR_IZQ ARRAY EXISTS ID TOKEN_COR_DER
+    {
+      try {
+        Map<Object, Object> x = (Map<Object, Object>) memory.get($ID.text);
+        if( x == null ) {
+          System.out.println(0);
+        }
+        else if ("HashMap".equals( x.getClass().getSimpleName() )) {
+          System.out.println(1);
+        }
+      } catch (ClassCastException e) {
+        System.out.println(0);
+      }
+    }
   | PUTS TOKEN_DOLLAR ID TOKEN_PAR_IZQ array_index TOKEN_PAR_DER
     {
       Map<Object, Object> x = (Map<Object, Object>) memory.get($ID.text);
@@ -89,7 +118,6 @@ puts_declaration
       else {
         System.out.println(x.get($array_index.v));
       }
-      System.out.println(memory);
     }
   | PUTS TOKEN_DOLLAR ID
     {
