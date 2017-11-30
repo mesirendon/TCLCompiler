@@ -1,6 +1,6 @@
 #input - output - asignacion y declaracion
 
-set a [ gets stdin]; #ingresar input "hola mundo"
+set a "hola mundo"; #ingresar input "hola mundo"
 
 set b [ expr { 2 + 1}];
 

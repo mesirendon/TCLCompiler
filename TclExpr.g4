@@ -52,12 +52,45 @@ sets_declaration
       }
       memory.put($ID.text, text.trim());
     }
+  | SET ID TOKEN_PAR_IZQ a=array_index TOKEN_PAR_DER b=array_index
+    {
+      Map<Object, Object> x = (Map<Object, Object>) memory.get($ID.text);
+      if (x == null) {
+        Map<Object, Object> xyz = new HashMap<Object, Object>();
+        xyz.put($a.v, $b.v);
+        memory.put($ID.text, xyz);
+      }
+      else {
+        x.put($a.v, $b.v);
+      }
+    }
+  ;
+
+array_index returns [Object v]
+  : TOKEN_INTEGER                                           { $v = $TOKEN_INTEGER.int; }
+  | TOKEN_DOUBLE                                            { $v = Double.parseDouble($TOKEN_DOUBLE.text); }
+  | TOKEN_STRING                                            { $v = $TOKEN_STRING.text.replaceAll("\"", ""); }
+  | TOKEN_COR_IZQ algebraic TOKEN_COR_DER                   { $v = $algebraic.v; }
+  | TOKEN_DOLLAR ID                                         { $v = memory.get($ID.text); }
+  | TOKEN_DOLLAR ID TOKEN_PAR_IZQ array_index TOKEN_PAR_DER { $v = ((Map<Object, Object>) memory.get($ID.text)).get($array_index.v); }
   ;
 
 puts_declaration
   : PUTS TOKEN_INTEGER {System.out.println($TOKEN_INTEGER.text);}
   | PUTS TOKEN_DOUBLE  {System.out.println($TOKEN_DOUBLE.text);}
   | PUTS TOKEN_STRING  {System.out.println($TOKEN_STRING.text.replaceAll("\"", ""));}
+  | PUTS TOKEN_DOLLAR ID TOKEN_PAR_IZQ array_index TOKEN_PAR_DER
+    {
+      Map<Object, Object> x = (Map<Object, Object>) memory.get($ID.text);
+      if (x == null) {
+        System.out.println("<" + $ID.line + "," + ( $ID.pos + 1 ) + "> Error semantico: la variable '" + $ID.text + "' no ha sido declarada.");
+        System.exit(0);
+      }
+      else {
+        System.out.println(x.get($array_index.v));
+      }
+      System.out.println(memory);
+    }
   | PUTS TOKEN_DOLLAR ID
     {
       Object x = memory.get($ID.text);
@@ -324,3 +357,38 @@ belem returns [Object v]
         System.exit(0);
     }
   ;
+
+/*
+procs
+  : PROC ID TOKEN_LLAVE_IZQ args+ TOKEN_LLAVE_DER TOKEN_LLAVE_IZQ declaration+ returns_declaration TOKEN_LLAVE_DER
+  ;
+
+args
+  : TOKEN_LLAVE_IZQ args_list TOKEN_LLAVE_DER
+  | TOKEN_LLAVE_IZQ TOKEN_COR_IZQ execution_list TOKEN_COR_DER TOKEN_LLAVE_DER
+  | TOKEN_LLAVE_IZQ execution_list TOKEN_LLAVE_DER
+  | TOKEN_LLAVE_IZQ TOKEN_DOLLAR ID TOKEN_PAR_IZQ TOKEN_COR_IZQ execution_list TOKEN_COR_DER TOKEN_PAR_DER TOKEN_LLAVE_DER
+  ;
+
+execution_list
+  : array size id
+  | array exists id
+  | id args
+  | gets_declaration
+  | exprs
+
+args_list
+  : number
+  | TOKEN_DOLLAR ID TOKEN_PAR_IZQ TOKEN_INTEGER TOKEN_PAR_DER
+  | TOKEN_DOLLAR ID
+  | TOKEN_STRING
+  ;
+
+def p_returns_declaration(p):
+    '''returns_declaration : return elem token_pyc returns_declaration
+                           | return token_cor_izq execution_list token_cor_der token_pyc returns_declaration
+                           | return token_dollar id token_pyc returns_declaration
+                           | return token_pyc returns_declaration
+                           | empty'''
+    pass
+*/
