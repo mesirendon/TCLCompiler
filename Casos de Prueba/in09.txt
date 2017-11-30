@@ -1,0 +1,13 @@
+#arreglos y reasignacion
+
+set arreglo(0) 4;
+puts [array size arreglo];
+puts [array exists arreglo];
+puts $arreglo(0);
+set arreglo 2;
+
+puts [array exists arreglo];
+
+puts $arreglo;
+
+puts $arreglo(0);

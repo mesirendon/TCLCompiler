@@ -1,0 +1,17 @@
+proc sum { {a} {b} {c} } {
+
+  if { $a == 2} then {
+
+      return $a;
+  }
+  if { $b == 3} then {
+      return $b;
+  }
+  return [expr { $a + $b + $c}];
+  return 1;
+}
+
+puts [sum {2} {3} {4}];
+puts [sum {1} {3} {4}];
+puts [sum {1} {4} {4}];
+puts [sum];
