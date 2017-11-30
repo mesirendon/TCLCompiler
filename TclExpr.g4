@@ -144,12 +144,15 @@ andexp returns [Integer v]
     {
       Object x = $eqexp.v;
       if ( x instanceof Double ) {
-        Integer intero = (Integer) x;
-        Integer decimal = (Integer) x * 10;
+        Integer intero = ( (Double) x ).intValue();
+        Integer decimal = ( (Double) ( (Double) x * 10 ) ).intValue();
         if (intero + decimal > 0)
           $v = (Integer) 1;
         else
           $v = (Integer) 0;
+      }
+      else if ( x instanceof Integer ) {
+        $v = (Integer) $eqexp.v;
       }
       else {
         System.exit(0);
