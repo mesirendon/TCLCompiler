@@ -1,0 +1,8 @@
+set pi 3.1416;
+set radio 2;
+set area [expr { $pi * ($radio**2)}];
+puts $pi;
+puts $radio;
+puts $area;
+set text "el area del circulo con radio $radio es $area";
+puts $text;
