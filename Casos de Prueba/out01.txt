@@ -1,0 +1,3 @@
+2
+3.3
+<10:6> Error semantico: el arreglo 'arreglo' no tiene la llave  '2.3'.

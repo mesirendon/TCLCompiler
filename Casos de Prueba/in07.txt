@@ -1,0 +1,36 @@
+#switch case
+
+set number 2;
+set string "abc";
+
+switch $number {
+
+    case 4 {
+        puts "case 4";
+    }
+    case 5 {
+        puts "case 5";
+    }
+    default {
+        puts "default";
+    }
+}
+
+switch $number {
+
+    case 4 {
+        puts "case 4";
+    }
+}
+
+switch $number {
+    case 2 {
+        puts "case 2";
+    }
+}
+
+switch $string { #error de tipo, solo son validos los enteros
+    case "abc" {
+
+    }
+}

@@ -1,0 +1,4 @@
+dentro de scope a = 2
+dentro de scope b = 3
+dentro de scope a = 2
+<10:27> Error semantico: la variable 'b' no ha sido declarada.

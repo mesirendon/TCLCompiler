@@ -1,0 +1,6 @@
+1
+1
+4
+0
+2
+<13:6> Error semantico: la variable 'arreglo' no es un arreglo.

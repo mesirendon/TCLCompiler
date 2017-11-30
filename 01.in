@@ -1,0 +1,12 @@
+puts [ expr { -1 && 2 }];
+puts [ expr { -1 && 0 }];
+puts [ expr { -1 || 2 }];
+puts [ expr { -1 || 0 }];
+puts [ expr { 0 || 0 }];
+puts [ expr { !(2 + 2 ) }];
+puts [ expr { !(2 - 2 ) }];
+puts [ expr { 2 * 2 **2 }];
+puts [ expr { 2 * 2 + 3 }];
+puts [ expr { 2 * 2 % 3 }];
+puts [ expr { 2.3 ** 3.5 }];
+puts [ expr { 2.3 ** [expr {2 + 2}] }];
