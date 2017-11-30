@@ -33,9 +33,25 @@ boolean_expr returns [Integer v]
   ;
 
 sets_declaration
-  : SET ID TOKEN_INTEGER {memory.put($ID.text, $TOKEN_INTEGER.int);}
-  | SET ID TOKEN_DOUBLE  {memory.put($ID.text, Double.parseDouble($TOKEN_DOUBLE.text));}
-  | SET ID TOKEN_STRING  {memory.put($ID.text, $TOKEN_STRING.text.replaceAll("\"", ""));}
+  : SET ID TOKEN_COR_IZQ execution_list TOKEN_COR_DER { memory.put($ID.text, $execution_list.v); }
+  | SET ID TOKEN_INTEGER                              { memory.put($ID.text, $TOKEN_INTEGER.int); }
+  | SET ID TOKEN_DOUBLE                               { memory.put($ID.text, Double.parseDouble($TOKEN_DOUBLE.text)); }
+  | SET ID TOKEN_STRING
+    {
+      String[] tokenizer = $TOKEN_STRING.text.replaceAll("\"", "").split(" ");
+      String text = "";
+      for (String i : tokenizer) {
+        if(i.startsWith("$")) {
+          String variable = i.substring(1);
+          Object temp = memory.get(variable);
+          text += temp + " ";
+        }
+        else {
+          text += i + " ";
+        }
+      }
+      memory.put($ID.text, text.trim());
+    }
   ;
 
 puts_declaration
